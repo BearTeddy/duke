@@ -33,9 +33,9 @@ public class DeadLines extends TaskList {
 
 
     @Override
-    public void ListTask() {
+    public void ListTask(int i) {
         String temp = this.taskStatus ? "\u2713" : "\u2613";
-        System.out.println("[" + Type.charAt(0) + "]" + "[" + temp + "] " + this.taskList + " (by: " + deadLine + ")");
+        System.out.println(i + 1 + ".[" + Type.charAt(0) + "]" + "[" + temp + "] " + this.taskList + " (by: " + deadLine + ")");
     }
 
     @Override

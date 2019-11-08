@@ -93,7 +93,7 @@ public class Process {
         System.out.println("Noted! I have removed this task:");
         try {
             if (Utility.isNumeric(commands.get(1))) {
-                tasks.get(Integer.parseInt(commands.get(1)) - 1).ListTask();
+                tasks.get(Integer.parseInt(commands.get(1)) - 1).ListTask(0);
                 tasks.remove(Integer.parseInt(commands.get(1)) - 1);
             } else {
                 System.out.println(("Please type numeric only!"));

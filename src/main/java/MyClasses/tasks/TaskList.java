@@ -25,9 +25,9 @@ public class TaskList {
     }
 
     //to return the task when requested
-    public void ListTask() {
+    public void ListTask(int i) {
         String temp = this.taskStatus ? "\u2713" : "\u2613";
-        System.out.println("[" + Type.charAt(0) + "]" + "[" + temp + "] " + this.taskList);
+        System.out.println(i + 1 + ".[" + Type.charAt(0) + "]" + "[" + temp + "] " + this.taskList);
     }
 
     //To format the task into saving format
