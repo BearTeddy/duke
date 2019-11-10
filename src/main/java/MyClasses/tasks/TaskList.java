@@ -44,6 +44,7 @@ public class TaskList {
         System.out.println("\n" + HoriLine);
     }
 
+    //To determine if the paramter task is the correct task in this task class object
     public boolean FindTask(String searchCriteria,String type){
         String field = searchCriteria.substring(searchCriteria.indexOf("<") + 1, searchCriteria.indexOf(">"));
         if (searchCriteria.contains("on") && searchCriteria.contains("(") && searchCriteria.contains(")")){

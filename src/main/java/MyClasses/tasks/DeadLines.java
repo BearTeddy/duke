@@ -70,6 +70,7 @@ public class DeadLines extends TaskList {
         }
     }
 
+    //To determine if the paramter task is the correct deadline in this deadline class object
     @Override
     public boolean FindTask(String searchCriteria, String type){
         if(type.contains("D")){

@@ -22,7 +22,7 @@ public class Process {
     //Temporary ArrayList to store Task List Objects
     private static ArrayList<TaskList> tasks = new ArrayList<>();
 
-    //To Add task into tasklist if the task is not null
+    //To Add task into tasks array if the parameter task is not null
     public static void AddTask(TaskList task) {
         if (task != null) tasks.add(task);
     }
@@ -139,6 +139,14 @@ public class Process {
         }
     }
 
+    /**
+     * to find the tasks,deadlines and event using two types of input inside <> and ().
+     * need <b>on</b> Keyword when trying to find date.
+     * <> = text that trying to find
+     * () = date/time trying to find
+     * for example command will be = find <Hello> on (10-10-2019)
+     * @param commands
+     */
     private  static void FindTask(ArrayList<String> commands) {
         ArrayList<TaskList> foundTasks = new ArrayList<>();
         if (commands.size() > 1 && commands.get(1) != null && !(commands.get(1).trim().isBlank())) {
@@ -151,7 +159,8 @@ public class Process {
                         }
                     }
                 }catch (IndexOutOfBoundsException e){
-                     System.out.println("Phwleaseeee ..... you need to type what u r finding");
+                     System.out.println("Unknown Command");
+                     Utility.PrintHL();
                 }
             } else if (commands.get(1).equals("-d") || commands.get(1).equals("deadline")) {
                 //Find inside deadline
@@ -162,7 +171,8 @@ public class Process {
                         }
                     }
                 }catch (IndexOutOfBoundsException e){
-                    System.out.println("Phwleaseeee ..... you need to type what u r finding");
+                    System.out.println("Unknown Command");
+                    Utility.PrintHL();
                 }
             } else if (commands.get(1).equals("-t") || commands.get(1).equals("event")) {
                 //find inside event
@@ -173,7 +183,8 @@ public class Process {
                         }
                     }
                 }catch (IndexOutOfBoundsException e){
-                    System.out.println("Phwleaseeee ..... you need to type what u r finding");
+                    System.out.println("Unknown Command");
+                    Utility.PrintHL();
                 }
             } else if (commands.get(1).equals("on") || commands.get(1).equals("at")) {
                 //find inside deadline and event
@@ -184,7 +195,8 @@ public class Process {
                         }
                     }
                 }catch (IndexOutOfBoundsException e){
-                    System.out.println("Phwleaseeee ..... you need to type what u r finding");
+                    System.out.println("Unknown Command");
+                    Utility.PrintHL();
                 }
             }else{
                 try{
@@ -248,7 +260,7 @@ public class Process {
                 Utility.TimeFormats();
                 break;
             default:
-                System.out.println("OOPS!! I'm Sorry. I do not know what you meant by " + Cmmd + " (╥﹏╥) .");
+                System.out.println("OOPS!! I'm Sorry. I do not know what you meant by \" " + Cmmd + " \" (╥﹏╥) .");
                 Utility.PrintHL();
         }
         return true;

@@ -69,6 +69,7 @@ public class Events extends TaskList {
         }
     }
 
+    //To determine if the parameter task is the correct deadline in this event class object
     @Override
     public boolean FindTask(String searchCriteria,String type){
         if(type.contains("E")){
