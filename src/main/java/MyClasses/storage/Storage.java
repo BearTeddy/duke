@@ -59,7 +59,6 @@ public class Storage {
         try {
             if (commands.get(0).equals("Task")) {
                 task = new TaskList(commands.get(4), Boolean.parseBoolean(commands.get(2)));
-
             } else if (commands.get(0).equals("Deadline")) {
                 if (commands.size() >= 5) {
                     task = new DeadLines(commands.get(4), commands.get(6), Boolean.parseBoolean(commands.get(2)));
@@ -79,3 +78,6 @@ public class Storage {
         }
     }
 }
+
+
+

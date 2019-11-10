@@ -5,8 +5,16 @@
 
 package MyClasses.tasks;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+
+import MyClasses.ui.Utility;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
+
 public class Events extends TaskList {
-    private String eventDeadLine = "not specified";
+    private Date eventDeadLine = null;
     private String Type = "Event";
 
     //Constructor when the task is specified without time
@@ -17,13 +25,21 @@ public class Events extends TaskList {
     //Constructor when the task is specified with time
     public Events(String Task, String at) {
         super(Task);
-        this.eventDeadLine = at;
+        try{
+            this.eventDeadLine = DateUtils.parseDateStrictly(at, Utility.possibleDateFormats);
+        }catch (ParseException e){
+            this.eventDeadLine=  null;
+        }
     }
 
     //Constructor when the task is specified with status and time
     public Events(String Task, String at, boolean Status) {
         super(Task, Status);
-        this.eventDeadLine = at;
+        try{
+            this.eventDeadLine = DateUtils.parseDateStrictly(at, Utility.possibleDateFormats);
+        }catch (ParseException e){
+            this.eventDeadLine=  null;
+        }
     }
 
 
@@ -35,11 +51,43 @@ public class Events extends TaskList {
     @Override
     public void ListTask(int i) {
         String temp = this.taskStatus ? "\u2713" : "\u2613";
-        System.out.println(i + 1 + ".[" + Type.charAt(0) + "]" + "[" + temp + "] " + this.taskList + " (at: " + eventDeadLine + ")");
+        String time;
+        if (this.eventDeadLine!= null){
+            time = DateFormatUtils.format(this.eventDeadLine,"dd-MMM-yyyy hh:mm a");
+        }else{
+            time ="not specified";
+        }
+        System.out.println(i + 1 + ".[" + Type.charAt(0) + "]" + "[" + temp + "] " + this.taskList + " (at: " + time + ")");
     }
 
     @Override
     public String Save() {
-        return Type.trim() + " | " + this.taskStatus + " | " + this.taskList.trim() + " | " + eventDeadLine.trim();
+        if(this.eventDeadLine != null){
+            return Type.trim() + " | " + this.taskStatus + " | " + this.taskList.trim() + " | " + Utility.DatetoString(this.eventDeadLine);
+        }else{
+            return Type.trim() + " | " + this.taskStatus + " | " + this.taskList.trim() + " | not specified";
+        }
+    }
+
+    @Override
+    public boolean FindTask(String searchCriteria,String type){
+        if(type.contains("E")){
+            String field = searchCriteria.substring(searchCriteria.indexOf("<") + 1, searchCriteria.indexOf(">"));
+            if(searchCriteria.contains("on")){
+                Date date = null;
+                try {
+                    date = DateUtils.parseDateStrictly(searchCriteria.substring(searchCriteria.indexOf("(") + 1, searchCriteria.indexOf(")")),Utility.possibleDateFormats);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return this.taskList.contains(field) && DateUtils.isSameDay(this.eventDeadLine, date);
+            }
+            else{
+                return this.taskList.contains(field);
+            }
+        }
+        else{
+            return false;
+        }
     }
 }

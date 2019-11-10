@@ -10,7 +10,12 @@ import MyClasses.tasks.DeadLines;
 import MyClasses.tasks.Events;
 import MyClasses.tasks.TaskList;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 public class Process {
 
@@ -35,20 +40,51 @@ public class Process {
             if (commands.get(1).equals("-t") || commands.get(1).equals("task")) {
                 AddTask(new TaskList(commands.get(2)));
             }
-            if (commands.get(1).equals("-d") || commands.get(1).equals("deadline")) {
-                String[] tasktime = commands.get(2).split("/by");
-                try {
-                    AddTask(new DeadLines(tasktime[0], tasktime[1]));
-                } catch (IndexOutOfBoundsException e) {
-                    AddTask(new DeadLines(tasktime[0]));
+            else if (commands.get(1).equals("-d") || commands.get(1).equals("deadline")) {
+                String[] taskTime = commands.get(2).split("/by");
+
+                try{
+                    taskTime[1] = Utility.ProcessTime(taskTime[1]);
+                    if(taskTime[1].equals("null"))
+                    {
+                        System.out.println("Incorrect Time format.\n Please see sample format by typing 'help time'");
+                        Utility.PrintHL();
+                    }else{
+                        try {
+                            AddTask(new DeadLines(taskTime[0], taskTime[1]));
+                        } catch (IndexOutOfBoundsException e) {
+                            AddTask(new DeadLines(taskTime[0]));
+                        }
+                    }
+                }catch (IndexOutOfBoundsException e){
+                    try {
+                        AddTask(new DeadLines(taskTime[0], taskTime[1]));
+                    } catch (IndexOutOfBoundsException err) {
+                        AddTask(new DeadLines(taskTime[0]));
+                    }
                 }
+
             }
-            if (commands.get(1).equals("-e") || commands.get(1).equals("event")) {
-                String[] tasktime = commands.get(2).split("/at");
-                try {
-                    AddTask(new Events(tasktime[0], tasktime[1]));
-                } catch (IndexOutOfBoundsException e) {
-                    AddTask(new Events(tasktime[0]));
+            else if (commands.get(1).equals("-e") || commands.get(1).equals("event")) {
+                String[] taskTime = commands.get(2).split("/at");
+                try{
+                taskTime[1] = Utility.ProcessTime(taskTime[1]);
+                if(taskTime[1].equals("null")){
+                    System.out.println("Incorrect Time format.\n Please see sample format by typing 'help time'");
+                    Utility.PrintHL();
+                }else{
+                    try {
+                        AddTask(new Events(taskTime[0], taskTime[1]));
+                    } catch (IndexOutOfBoundsException e) {
+                        AddTask(new Events(taskTime[0]));
+                    }
+                }
+                }catch (IndexOutOfBoundsException err){
+                    try {
+                        AddTask(new Events(taskTime[0], taskTime[1]));
+                    } catch (IndexOutOfBoundsException e) {
+                        AddTask(new Events(taskTime[0]));
+                    }
                 }
             }
         } else {
@@ -103,6 +139,74 @@ public class Process {
         }
     }
 
+    private  static void FindTask(ArrayList<String> commands) {
+        ArrayList<TaskList> foundTasks = new ArrayList<>();
+        if (commands.size() > 1 && commands.get(1) != null && !(commands.get(1).trim().isBlank())) {
+            if (commands.get(1).equals("-t") || commands.get(1).equals("task")) {
+                //Find inside tasks
+                try{
+                    for (int i = 0; i < tasks.size(); i++) {
+                        if(tasks.get(i).FindTask(commands.get(2),"T")){
+                            foundTasks.add(tasks.get(i));
+                        }
+                    }
+                }catch (IndexOutOfBoundsException e){
+                     System.out.println("Phwleaseeee ..... you need to type what u r finding");
+                }
+            } else if (commands.get(1).equals("-d") || commands.get(1).equals("deadline")) {
+                //Find inside deadline
+                try{
+                    for (int i = 0; i < tasks.size(); i++) {
+                        if(tasks.get(i).FindTask(commands.get(2),"D")){
+                            foundTasks.add(tasks.get(i));
+                        }
+                    }
+                }catch (IndexOutOfBoundsException e){
+                    System.out.println("Phwleaseeee ..... you need to type what u r finding");
+                }
+            } else if (commands.get(1).equals("-t") || commands.get(1).equals("event")) {
+                //find inside event
+                try{
+                    for (int i = 0; i < tasks.size(); i++) {
+                        if(tasks.get(i).FindTask(commands.get(2),"E")){
+                            foundTasks.add(tasks.get(i));
+                        }
+                    }
+                }catch (IndexOutOfBoundsException e){
+                    System.out.println("Phwleaseeee ..... you need to type what u r finding");
+                }
+            } else if (commands.get(1).equals("on") || commands.get(1).equals("at")) {
+                //find inside deadline and event
+                try{
+                    for (int i = 0; i < tasks.size(); i++) {
+                        if(tasks.get(i).FindTask(commands.get(2),"DE")){
+                            foundTasks.add(tasks.get(i));
+                        }
+                    }
+                }catch (IndexOutOfBoundsException e){
+                    System.out.println("Phwleaseeee ..... you need to type what u r finding");
+                }
+            }else{
+                try{
+                    for (int i = 0; i < tasks.size(); i++) {
+                        if(tasks.get(i).FindTask(commands.get(1),"TDE")){
+                            foundTasks.add(tasks.get(i));
+                        }
+                    }
+                }catch (IndexOutOfBoundsException e){
+                    System.out.println("Phwleaseeee ..... you need to type what u r finding");
+                }
+            }
+            for (int i = 0; i < foundTasks.size(); i++) {
+                foundTasks.get(i).ListTask(i);
+            }
+            Utility.PrintHL();
+        } else {
+            System.out.println("Please type something to find");
+            Utility.PrintHL();
+        }
+    }
+
     //Main process to make sense of what the command is trying to say
     public static boolean Task(String Cmmd) {
 
@@ -123,6 +227,10 @@ public class Process {
             case "add":
                 AllocateTaskType(commands);
                 break;
+            case "find":
+            case "search":
+                    FindTask(commands);
+                    break;
             case "remove":
             case "delete":
                 RemoveTask(commands);
@@ -131,11 +239,16 @@ public class Process {
             case "save file":
                 Storage.SaveFile(tasks);
                 break;
-
+            case "help time":
+            case "time":
+                Utility.TimeFormats();
+                break;
             default:
                 System.out.println("OOPS!! I'm Sorry. I do not know what you meant by " + Cmmd + " (╥﹏╥) .");
                 Utility.PrintHL();
         }
         return true;
     }
+
+
 }

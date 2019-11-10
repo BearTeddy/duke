@@ -5,6 +5,7 @@
 
 package MyClasses.tasks;
 
+
 public class TaskList {
     private static final String HoriLine = "--------------------------------------------------\n";
     protected String taskList;
@@ -43,4 +44,11 @@ public class TaskList {
         System.out.println("\n" + HoriLine);
     }
 
+    public boolean FindTask(String searchCriteria,String type){
+        String field = searchCriteria.substring(searchCriteria.indexOf("<") + 1, searchCriteria.indexOf(">"));
+        if(type.contains("T")){
+            return this.taskList.contains(field);
+        }
+        return false;
+    }
 }

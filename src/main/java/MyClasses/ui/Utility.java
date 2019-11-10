@@ -16,11 +16,69 @@
 
 package MyClasses.ui;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Utility {
+
+    public static String[] possibleDateFormats = {
+            "dd-MM-yyyy",
+            "dd/MM/yyyy",
+            "yyyy-MM-dd",
+            "yyyy/MM/dd",
+            "dd-MMM-yyyy hh:mm a",
+            "yyyy-MM-dd HH:mm",
+            "yyyy/MM/dd HH:mm",
+            "yyyy-MM-dd HH:mm:ss",
+            "yyyy/MM/dd HH:mm:ss",
+            "dd/MM/yyyy HH:mm",
+            "dd/MM/yyyy HH:mm:ss",
+            "dd-MM-yyyy HH:mm:ss",
+            "dd-MM-yyyy HH:mm",
+            "dd-MM-yyyy'T'HH:mm:ss",
+            "dd-MM-yyyy'T'HH:mm",
+            "yyyy-MM-dd'T'HH:mm",
+            "yyyy-MM-dd'T'HH:mm:ss",
+            "yyyy-MM-dd hh:mm a",
+            "yyyy/MM/dd hh:mm a",
+            "yyyy-MM-dd hh:mm:ss a",
+            "yyyy/MM/dd hh:mm:ss a",
+            "dd/MM/yyyy hh:mm a",
+            "dd/MM/yyyy hh:mm:ss a",
+            "dd-MM-yyyy hh:mm:ss a",
+            "dd-MM-yyyy hh:mm a",
+            "dd-MM-yyyy'T'hh:mm:ss a",
+            "dd-MM-yyyy'T'hh:mm a",
+            "yyyy-MM-dd'T'hh:mm a",
+            "yyyy-MM-dd'T'hh:mm:ss a"
+    } ;
+
+    public static String ProcessTime(String TimeinString){
+        try{
+            Date date = DateUtils.parseDateStrictly(TimeinString,possibleDateFormats);
+            return DateFormatUtils.format(date,"dd-MMM-yyyy hh:mm a");
+        }catch (ParseException e){
+            return "null" ;
+        }
+    }
+
+    public static String DatetoString(Date date){
+        return DateFormatUtils.format(date, "dd-MMM-yyyy hh:mm a");
+    }
+
+    public static void TimeFormats(){
+        System.out.println("Below are the possible Time formats you can use. \n Priority format is by descending order");
+        for (String s: possibleDateFormats){
+            System.out.println(s);
+        }
+        Utility.PrintHL();
+    }
 
     //To run at the start of the program for welcoming the user
     public static void WelcomeMessage() {
