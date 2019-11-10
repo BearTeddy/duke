@@ -73,14 +73,17 @@ public class Events extends TaskList {
     public boolean FindTask(String searchCriteria,String type){
         if(type.contains("E")){
             String field = searchCriteria.substring(searchCriteria.indexOf("<") + 1, searchCriteria.indexOf(">"));
-            if(searchCriteria.contains("on")){
+            if(searchCriteria.contains("on") ){
                 Date date = null;
                 try {
-                    date = DateUtils.parseDateStrictly(searchCriteria.substring(searchCriteria.indexOf("(") + 1, searchCriteria.indexOf(")")),Utility.possibleDateFormats);
+                    String datestr = searchCriteria.substring(searchCriteria.indexOf("(") + 1, searchCriteria.indexOf(")"));
+                    date = DateUtils.parseDateStrictly(datestr,Utility.possibleDateFormats);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                return this.taskList.contains(field) && DateUtils.isSameDay(this.eventDeadLine, date);
+                if(this.eventDeadLine!=null){
+                    return this.taskList.contains(field) && DateUtils.isSameDay(this.eventDeadLine, date);
+                } else return false;
             }
             else{
                 return this.taskList.contains(field);

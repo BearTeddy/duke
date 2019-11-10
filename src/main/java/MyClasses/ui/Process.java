@@ -189,12 +189,16 @@ public class Process {
             }else{
                 try{
                     for (int i = 0; i < tasks.size(); i++) {
-                        if(tasks.get(i).FindTask(commands.get(1),"TDE")){
+                        if(tasks.get(i).FindTask(commands.get(1)+commands.get(2),"TDE")){
                             foundTasks.add(tasks.get(i));
                         }
                     }
                 }catch (IndexOutOfBoundsException e){
-                    System.out.println("Phwleaseeee ..... you need to type what u r finding");
+                    for (int i = 0; i < tasks.size(); i++) {
+                        if(tasks.get(i).FindTask(commands.get(1),"TDE")){
+                            foundTasks.add(tasks.get(i));
+                        }
+                    }
                 }
             }
             for (int i = 0; i < foundTasks.size(); i++) {

@@ -46,7 +46,10 @@ public class TaskList {
 
     public boolean FindTask(String searchCriteria,String type){
         String field = searchCriteria.substring(searchCriteria.indexOf("<") + 1, searchCriteria.indexOf(">"));
-        if(type.contains("T")){
+        if (searchCriteria.contains("on") && searchCriteria.contains("(") && searchCriteria.contains(")")){
+            return false;
+        }
+        else if (type.contains("T")){
             return this.taskList.contains(field);
         }
         return false;

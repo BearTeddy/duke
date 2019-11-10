@@ -77,11 +77,14 @@ public class DeadLines extends TaskList {
             if(searchCriteria.contains("on")){
                 Date date = null;
                 try {
-                    date = DateUtils.parseDateStrictly(searchCriteria.substring(searchCriteria.indexOf("(") + 1, searchCriteria.indexOf(")")),Utility.possibleDateFormats);
+                    String datestr = searchCriteria.substring(searchCriteria.indexOf("(") + 1, searchCriteria.indexOf(")"));
+                    date = DateUtils.parseDateStrictly(datestr,Utility.possibleDateFormats);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                return this.taskList.contains(field) && DateUtils.isSameDay(this.deadLine, date);
+                if(this.deadLine!=null){
+                    return this.taskList.contains(field) && DateUtils.isSameDay(this.deadLine, date);
+                } else return false;
             }
             else{
                 return this.taskList.contains(field);
