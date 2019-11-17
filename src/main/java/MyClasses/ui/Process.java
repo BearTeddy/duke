@@ -147,7 +147,7 @@ public class Process {
      * for example command will be = find <Hello> on (10-10-2019)
      * @param commands
      */
-    private  static void FindTask(ArrayList<String> commands) {
+    private  static void FindTask(ArrayList<String> commands){
         ArrayList<TaskList> foundTasks = new ArrayList<>();
         if (commands.size() > 1 && commands.get(1) != null && !(commands.get(1).trim().isBlank())) {
             if (commands.get(1).equals("-t") || commands.get(1).equals("task")) {
